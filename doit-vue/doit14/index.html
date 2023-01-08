@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05-2</title>
+</head>
+<body>
+  <div id="app">
+    <h1>자바스크립트 표현식</h1>
+    
+    <p>{{ message }}</p>
+    <p>{{ message + '!!!'}}</p>
+
+    <p>직접 표현 : {{ message.split('').reverse().join('') }}</p>
+    <p>computed 사용 : {{ reversedMessage}} </p>
+    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue.js!'
+      },
+      computed: {
+        reversedMessage: function(){
+          return this.message.split('').reverse().join('');
+        }//이것이 더 가독성에 좋은 방법
+      }
+    })
+
+  </script>
+</body>
+</html>

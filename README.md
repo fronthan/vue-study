@@ -15,4 +15,14 @@
 <p>doit8 : Nested Router</p>
 <p>doit9 : Named Router</p>
 <p>doit10 : Named Router 연습문제</p>
+<p>doit11 : view-resource</p>
+<p>doit12 : axios</p>
+<p>doit13 : v-bind, 데이터 바인딩</p>
+<p>doit14 : 자바스크립트 표현식</p>
+<p>doit15 : 디렉티브들</p>
+<p>doit16 : v-on 이벤트 처리</p>
+<p>doit17 : methods 속성</p>
+<p>doit18 : computed 속성</p>
+<p>doit19 : watch속성, v-model</p>
+<p>doit20 : 13~17 연습문제</p>
 

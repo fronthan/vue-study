@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>퀴즈5</title>
+</head>
+<body>
+  <h1>5장 연습문제</h1>
+  <div id="app">
+    <header>
+      <p>{{message}}</p>
+      <p>{{newmessage}}</p>
+    </header>
+    <section>
+      <p v-bind:id="uid"></p>
+      <button v-on:click="clickBtn">alert</button>
+
+      <ul v-if="flag">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+    </section>
+
+    <button @click="clickEvent">두번재</button>
+   
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+   
+   new Vue({
+    data: {
+      message: 'message vue.js',
+      newmessage: 'new message~',
+
+      uid: '20',
+
+      flag:true
+    },
+    methods: {
+      clickBtn() {
+        console.log('hi');
+      },
+      clickEvent() {
+        console.log('두번째 이벤트');
+      }
+    }
+   }).$mount('#app');
+  </script>
+</body>
+</html>

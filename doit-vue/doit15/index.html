@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05-3</title>
+</head>
+<body>
+  <div id="app">
+    <h1>디렉티브</h1>
+
+    <a v-if="flag">v-if</a>
+
+    <p>v-for</p>
+    <ul>
+      <li v-for="system in systems">{{system}}</li>
+    </ul>
+
+    <p v-show="flag">v-show</p>
+
+    <p v-bind:id="uid">v-bind:id</p>
+    
+    <button v-on:click="popupAlert">경고창 버튼</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+   
+   new Vue({
+    data: {
+      flag: true,
+      systems: ['android', 'iOS', 'window'],
+      uid: 10,
+    },
+    methods: {
+      popupAlert: function(){
+        return alert('경고창 표시');
+      }
+    }
+   }).$mount('#app');
+  </script>
+</body>
+</html>
