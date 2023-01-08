@@ -14,7 +14,6 @@ import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
 
 export default {
-  
   data(){
     return {
       todoItems: []
@@ -22,11 +21,12 @@ export default {
   },
   created() {
     if(localStorage.length > 0) {
-      for(var i=0; i<localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i))
+      for (var i=0; i < localStorage.length; i++) {
+        this.todoItems.push(localStorage.key(i));
       }
     }
   },
+
   methods: {
     addTodo() {
       localStorage.setItem(todoItem, todoItem);
@@ -39,15 +39,15 @@ export default {
     removeTodo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
-    }
+    },
   },
+
   components: {
     'TodoHeader': TodoHeader,
     'TodoInput': TodoInput,
     'TodoList': TodoList,
     'TodoFooter': TodoFooter
   },
-
 }
 </script>
 

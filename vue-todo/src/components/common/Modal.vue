@@ -7,8 +7,8 @@ export default {
 </script>
 
 <template>
-  <Transition name="modal">
-    <div v-if="showModal" class="modal-mask">
+  <Transition v-if="showModal" name="modal">
+    <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">

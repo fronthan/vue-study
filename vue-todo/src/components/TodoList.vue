@@ -1,5 +1,6 @@
 <template>
   <section>
+    <!-- <ul> -->
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" class="shadow" :key="todoItem">
         <i class="checkBtn fas fa-check" aria-hidden="true"></i>
@@ -8,6 +9,7 @@
           <i class="far fa-trash-alt" aria-hidden="true"></i>
         </span>
       </li>
+    <!-- </ul> -->
     </transition-group>
   </section>
 </template>
@@ -16,9 +18,12 @@
 export default {
   props: ['propsdata'],
   
-  removeTodo(todoItem, index){
-    this.$emit('removeTodo', todoItem, index);
-    
+  methods: { 
+    removeTodo(todoItem, index){
+      // localStorage.removeItem(todoItem);
+      // this.todoItems.splice(index, 1);
+      this.$emit('removeTodo', todoItem, index);
+    }
   }
 }
 </script>

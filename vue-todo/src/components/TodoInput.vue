@@ -12,34 +12,36 @@
     </span>
 
 
-    <modal v-if="shadowModal" @close="showModal = false">
+    <Modal v-if="showModal" @close="showModal = false">
       <h3 slot="header">경고</h3>
       <span slot="footer" @click="showModal = false">
         할 일을 입력하세영.
         <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
       </span>
-    </modal>
+    </Modal>
   </div>
 </template>
 
 <script>
-import Modal from "./common/Modal.vue"
+  import Modal from "./common/Modal.vue";
 
 export default {
+
   props: ['propsdata'],
   data() {
     return {
       newTodoItem: '',
       showModal: false
     };
-  },
+  }, 
   methods: {
     addTodo() {
       if (this.newTodoItem !== "") {
         var value = this.newTodoItem && this.newTodoItem.trim();
-        this.$emit("addTodo", value);
+        this.$emit('addTodo', value);
         this.clearInput();
       } else {
+        console.log('clicked')
         this.showModal = !this.showModal;
       }
     },
@@ -48,7 +50,7 @@ export default {
     }
   },
   components: {
-    Modal
+    'Modal': Modal
   }
 };
 </script>
