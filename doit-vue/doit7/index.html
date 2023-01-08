@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04-1</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Vue Router</h1>
+    <ul>
+      <li>
+        <router-link to="/">메인</router-link>
+      </li>
+      <li>
+        <router-link to="/login">로그인</router-link>
+      </li>
+    </ul>
+
+    <router-view></router-view>
+       
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.6.1/vue-router.js"></script>
+  <script>
+    var Main = {
+      template: '<div>main</div>'
+    };
+    var Login= {
+      template: '<div>Login</div>'
+    }
+
+    var routes = [
+      {path: '/', component: Main},
+      {path: '/login', component: Login}
+    ]
+    var router = new VueRouter({
+      mode: 'history',//주소창에 나타나는 hash 없애기
+      routes
+    });
+
+    var app = new Vue({
+      router
+    }).$mount('#app');
+
+  </script>
+</body>
+</html>

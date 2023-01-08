@@ -4,4 +4,15 @@
 
 ## Do it! Vue.js 입문 - 예제로 이해하고 실전 프로젝트로 완성한다!
 - 2022.11.19 ~ 2023.01.07 vue-todo<br />
-- 2023.01.08 : doit-vue > doit1
+- 2023.01.08
+<p>doit1 : 전역, 로컬</p>
+<p>doit2 : scope</p>
+<p>doit3 : props</p>
+<p>doit4 : event Emit</p>
+<p>doit5 : 이벤트 버스</p>
+<p>doit6 : 1~5 연습문제</p>
+<p>doit7 : Vue Router</p>
+<p>doit8 : Nested Router</p>
+<p>doit9 : Named Router</p>
+<p>doit10 : Named Router 연습문제</p>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-3 quiz</title>
+</head>
+<body>
+  <div id="app">
+    <h1>직접 해보기</h1>
+    <child-component v-bind:propsdata="message"></child-component>
+    <sibling-component v-bind:propsdata="anotherMessage"></sibling-component>    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+  Vue.component('sibling-component', {
+    props: ['propsdata'],
+    template: '<p>propsdata: {{propsdata}}</p>'
+  });
+
+  Vue.component('child-component', {
+    props: ['propsdata'],
+    template: '<p>{{propsdata}}</p>'
+  })
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hi vue! 상위 컴포넌트에서 전달받음',
+      anotherMessage: '임의의 문자열'    
+    }
+  });
+
+  </script>
+</body>
+</html>

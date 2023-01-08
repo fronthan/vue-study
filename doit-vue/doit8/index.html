@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04-2</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Nested Router</h1>
+    <ul>
+      <li>
+        <router-link to="/user">기본</router-link>
+      </li>
+      <li>
+        <router-link to="/user/post">post</router-link>
+      </li>
+      <li>
+        <router-link to="/user/profile">profile</router-link>
+      </li>
+    </ul>
+
+    <router-view></router-view>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.6.1/vue-router.js"></script>
+  <script>
+    var User = {
+      template: `
+      <div>
+        User 컴포넌트
+        <router-view></router-view>
+      </div>
+      `
+    };
+
+    var UserProfile= {template: '<p>User Profile component</p>'};
+    var UserPost = {template: '<p>User Post component</p>'};
+
+    var routes = [
+      {
+        path: '/user',
+        component: User,
+        children: [
+          {path: 'post', component: UserPost},
+          {path: 'profile', component: UserProfile}
+        ]
+      }
+    ];
+
+    var router = new VueRouter({
+      routes
+    })
+
+    var app = new Vue({
+      router
+    }).$mount('#app');
+
+  </script>
+</body>
+</html>

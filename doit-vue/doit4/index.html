@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-9</title>
+</head>
+<body>
+  <div id="app">
+    <h1>하위컴포넌트에서 이벤트를 발생시켜 상위컴포넌트에서 수신</h1>
+    <child-component v-on:show-log="printText"></child-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    //하위 컴포넌트
+    Vue.component('child-component', {
+      template: '<button v-on:click="showLog">show</button>',//1번: 나타남
+      methods: {
+        showLog: function(){
+          this.$emit('show-log');//2번: 클릭하면 showLog 이벤트가 발생해 상위컴포넌트로 전달함
+        }
+      }
+    });
+
+    //전역 컴포넌트
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue! 상위 컴포넌트의 메세지'
+      },//이건 예제에서 필요없는 데이터
+      methods: {
+        printText: function(){
+          console.log('이벤트를 받음');
+        }//3번: show-log로 발생시킨 printText를 실행한다.
+      }
+    });
+  </script>
+</body>
+</html>

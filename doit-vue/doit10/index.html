@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>doit 10 quiz</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Named Router</h1>
+    
+    <router-view name="header"></router-view>
+    <router-view></router-view>
+    <router-view name="footer"></router-view>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.6.1/vue-router.js"></script>
+  <script>
+    var Body = { template: '<div>body</div>' }
+    var Header = {template: '<div>Header</div>'}
+    var Footer = {template: '<div>FooteR</div>'}
+    
+    var LoginBody = { template: '<div>Login body</div>' }
+    var LoginHeader = {template: '<div>Login Header</div>'}
+    var LoginFooter = {template: '<div>Login FooteR</div>'}
+
+
+
+    var router = new VueRouter({
+      routes: [
+        {
+          path: '/', 
+          components: {
+            header:Header,
+            default: Body,
+            footer: Footer
+          }
+        },
+        {
+          path: '/login',
+          components: {
+            header:LoginHeader,
+            default: LoginBody,
+            footer: LoginFooter
+          }
+        }
+      ]
+    });
+
+    var app = new Vue({
+      router
+    }).$mount('#app');
+
+  </script>
+</body>
+</html>
