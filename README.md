@@ -26,3 +26,7 @@
 <p>doit19 : watch속성, v-model</p>
 <p>doit20 : 13~17 연습문제</p>
 
+## 프로젝트로 배우는 Vue.js3 - Kossie Coder
+- 2023.01.09 
+- vue3-kossie
+

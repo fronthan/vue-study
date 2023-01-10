@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>뷰 철치 1</title>
+  <link rel="stylesheet" href="../../css/font.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <h1 class="title">길치의 나만의 지하철</h1>
+    
+    <div class="contents">
+      <ul>
+        <li class="box" v-for="(box, idx) in boxes">
+          <div class="top">
+            <div class="tit">{{idx+1}} 번 열차</div>
+            <span class="nbr">1호선</span>
+          </div>
+          <div class="body">
+            <p class="txt">{{ box.msg }}</p>
+            <p class="txt">{{ box.last_station }} 행</p>
+            <p class="txt">{{ box.train_num}}</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="foot">
+        <dl class="togo">
+          <dt>어느 방향?</dt>
+          <dd>
+            {{ next_station }}
+          </dd>
+        </dl>
+      </div>
+    </div>      
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+  <script>
+  new Vue({
+  el: '#app', 
+
+  data: {
+    boxes: [],
+    next_station: ''
+  },
+
+  created: function() {
+    const urlKey = 'http://swopenAPI.seoul.go.kr/api/subway/41496c4b7063796e35364153786d52/json';
+
+    axios.get(urlKey+'/realtimeStationArrival/0/100/신도림')
+    .then(res => {
+      const data = res.data;
+      const result = data.realtimeArrivalList;
+
+      for (var i=0; i<result.length; i++) {
+        const current = result[i];          
+        
+        if (current.updnLine == "하행" && current.subwayId == "1001") {            
+          if(current.bstatnNm.startsWith('천안') || current.bstatnNm.startsWith('서동탄')) {              
+            const date = current.recptnDt;
+            const time = date.split(' ')[1].split('.')[0];
+            
+            let next = current.trainLineNm.split('-')[1];
+            const obj = {
+              'msg': current.arvlMsg2,
+              'train_num': current.btrainNo,
+              'time': time,
+              'last_station': current.bstatnNm,
+            }
+            this.boxes.push(obj);
+
+            next = next.trim().split(' ')[0];
+            this.next_station = next;
+          }
+        }
+      }  
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+});   
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+html, body, h1, p, ul {padding: 0; margin: 0;}
+ul {list-style-type: none;}
+.title {
+  padding: 16px 0;
+  color:#fff; font-size: 24px; text-align: center;
+  background-color: rgba(0, 179,179, .5); 
+}
+
+.contents {padding: 20px;}
+.box {padding: 20px; background-color: rgba(255, 236, 166, 0.33);}
+.box .top {position: relative; padding-bottom: 14px; border-bottom:1px solid rgba(54, 29, 50, 0.12);}
+.box .tit {color:#361D32; font-size: 20px; font-weight: 700;}
+.box .nbr {position: absolute; right:0; bottom:15px; display: inline-block; padding: 6px 12px; border: 1px solid #F8F8F8; border-radius: 4px; background-color: #fff; color:#272643; font-weight: 400; font-size: 12px;}
+.box .txt {padding-top: 11px; color:#361D32; font-weight: 400; font-size: 16px;}
+
+.box + .box {margin-top: 15px;}
+
+.foot {margin-top: 19px;}
+.foot dl {display: flex; margin-top: 12px; color:#361D32; font-size: 14px; font-weight: 400;}
+.foot dt {flex:.7;}
+.foot dd {flex:1.3; text-align: left;}
