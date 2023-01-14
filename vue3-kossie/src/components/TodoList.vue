@@ -13,7 +13,7 @@
             :style="todo.completed ? todoStyle : {}"
             @change="toggleTodo(idx)"
           >
-            <input class="form-check-input" type="checkbox" :value="todo.completed">
+            <input class="form-check-input" type="checkbox" :checked="todo.completed">
             {{ todo.subject }}
           </label>
         </div>
@@ -38,19 +38,25 @@ export default {
       required:true
     }
   },
+  emits: ['delete-todo', 'toggle-todo'],
 
-  setup(props, context){
+  setup(props, { emit }){
     const toggleTodo = (index) => {
-      context.emit('toggle-todo', index);
+      emit('toggle-todo', index);
     };
 
     const deleteTodo = (index) => {
-      context.emit('delete-todo', index);
+      emit('delete-todo', index);
     }
     return {
       toggleTodo,
       deleteTodo
     }
+
+    const todoStyle = {
+      textDecoration: 'line-through',
+      color: 'gray'
+    };    
   }
 
 }
