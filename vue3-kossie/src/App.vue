@@ -124,7 +124,6 @@ export default {
 
     return {
       todos,
-      todoStyle,
       deleteTodo,
       addTodo,
       toggleTodo,

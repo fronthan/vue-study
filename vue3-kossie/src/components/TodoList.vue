@@ -50,7 +50,8 @@ export default {
     }
     return {
       toggleTodo,
-      deleteTodo
+      deleteTodo,
+      todoStyle,
     }
 
     const todoStyle = {
