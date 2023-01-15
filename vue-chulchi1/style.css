@@ -8,14 +8,20 @@ ul {list-style-type: none;}
   background-color: rgba(0, 179,179, .5); 
 }
 
+.btn_area {
+  display: flex; 
+  padding: 20px;
+}
+.btn1, .btn2 {width:49%; padding: 15px 0; border: none 0; background: rgba(54, 29, 50, 0.12);}
+.btn2 {margin-left: 2%;}
 .contents {padding: 20px;}
-.box {padding: 20px; background-color: rgba(255, 236, 166, 0.33);}
+.contents ul {display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between;}
+.box {max-width:360px; width:100%; margin-bottom: 15px; padding: 20px; background-color: rgba(255, 236, 166, 0.33);}
 .box .top {position: relative; padding-bottom: 14px; border-bottom:1px solid rgba(54, 29, 50, 0.12);}
 .box .tit {color:#361D32; font-size: 20px; font-weight: 700;}
 .box .nbr {position: absolute; right:0; bottom:15px; display: inline-block; padding: 6px 12px; border: 1px solid #F8F8F8; border-radius: 4px; background-color: #fff; color:#272643; font-weight: 400; font-size: 12px;}
 .box .txt {padding-top: 11px; color:#361D32; font-weight: 400; font-size: 16px;}
 
-.box + .box {margin-top: 15px;}
 
 .foot {margin-top: 19px;}
 .foot dl {display: flex; margin-top: 12px; color:#361D32; font-size: 14px; font-weight: 400;}

@@ -11,7 +11,12 @@
   <div id="app">
     <h1 class="title">길치의 나만의 지하철</h1>
     
-    <div class="contents">
+    <div class="btn_area">
+      <button class="btn1" @click="goTo('work')">출근</button>
+      <button class="btn2" @click="goTo('home')">퇴근</button>
+    </div>
+    
+    <div class="contents" v-show="btnOn">
       <ul>
         <li class="box" v-for="(box, idx) in boxes">
           <div class="top">
@@ -34,7 +39,9 @@
           </dd>
         </dl>
       </div>
-    </div>      
+    </div>  
+    
+    <div v-if="btnOff">데이터가 없습니다.</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -46,43 +53,64 @@
 
   data: {
     boxes: [],
-    next_station: ''
+    next_station: '',
+    btnOn: false,
+    btnOff: false,
   },
 
-  created: function() {
-    const urlKey = 'http://swopenAPI.seoul.go.kr/api/subway/41496c4b7063796e35364153786d52/json';
+  methods: {
+    goTo(place) {
+      this.btnOn = false;
+      this.boxes = [];
+      const station = place == 'home' ? '신도림' : '금정';
+      const upDown = place == 'home' ? '하행' : '상행';
 
-    axios.get(urlKey+'/realtimeStationArrival/0/100/신도림')
-    .then(res => {
-      const data = res.data;
-      const result = data.realtimeArrivalList;
+      const urlKey = 'http://swopenAPI.seoul.go.kr/api/subway/41496c4b7063796e35364153786d52/json';
 
-      for (var i=0; i<result.length; i++) {
-        const current = result[i];          
-        
-        if (current.updnLine == "하행" && current.subwayId == "1001") {            
-          if(current.bstatnNm.startsWith('천안') || current.bstatnNm.startsWith('서동탄')) {              
-            const date = current.recptnDt;
-            const time = date.split(' ')[1].split('.')[0];
-            
-            let next = current.trainLineNm.split('-')[1];
-            const obj = {
-              'msg': current.arvlMsg2,
-              'train_num': current.btrainNo,
-              'time': time,
-              'last_station': current.bstatnNm,
+      axios.get(urlKey+'/realtimeStationArrival/0/100/'+station)
+      .then(res => {
+        const data = res.data;
+        const result = data.realtimeArrivalList;
+
+        for (var i=0; i<result.length; i++) {
+          const current = result[i];          
+          
+          if (current.updnLine == upDown && current.subwayId == "1001") { 
+            const ary = place == 'home' ? ['천안', '서동탄'] : ['광운대', '청량리'];
+
+           // console.log(current)
+            if(current.bstatnNm.startsWith(ary[0]) || current.bstatnNm.startsWith(ary[1])) {              
+              const date = current.recptnDt;
+              const time = date.split(' ')[1].split('.')[0];
+
+              let next = current.trainLineNm.split('-')[1];
+              const obj = {
+                'msg': current.arvlMsg2,
+                'train_num': current.btrainNo,
+                'time': time,
+                'last_station': current.bstatnNm,
+              }
+              this.boxes.push(obj);
+
+              next = next.trim().split(' ')[0];
+              this.next_station = next;
+              
+              this.btnOn = true;
+
+             // console.log(this.boxes.length)
+              this.btnOff = this.boxes.length ? false : true;
+
+              console.log(this.btnOff)
+              
             }
-            this.boxes.push(obj);
-
-            next = next.trim().split(' ')[0];
-            this.next_station = next;
           }
         }
-      }  
+
     }).catch(err => {
       console.log(err);
     });
-  }
+    },
+  },
 });   
 
   </script>
