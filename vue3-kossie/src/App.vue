@@ -27,25 +27,44 @@
    @delete-todo="deleteTodo"
   />
 
+  <hr>
+
+  <TodoPagination 
+    :currentPage="currentPage"
+    :numberOfPages="numberOfPages"
+    @get-todos="getTodos" 
+  />
+  
+
 </div>
 </template>
 
 <script>
 import { ref , computed } from 'vue';//data를 reactive하게
+import axios from "axios";
 import TodoList from './components/TodoList.vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
-import axios from "axios";
+import TodoPagination from './components/TodoPagination.vue';
 
 export default {
   components : {
     TodoSimpleForm,
-    TodoList
+    TodoList,
+    TodoPagination
   }, 
   setup() {
 
     /* v-model 은 양방향 바인딩을 위함 */
     const todos = ref([]);
     const error = ref('');
+
+    const numberOfTodos = ref(0);
+    const limit = 5;
+    const currentPage = ref(1);
+
+    const numberOfPages = computed(()=> {
+      return Math.ceil(numberOfTodos.value/limit);
+    })
     
     const deleteTodo = async (idx) => {
       error.value = '';
@@ -60,10 +79,13 @@ export default {
       }
     };
 
-    const getTodos = async () => {
+    const getTodos = async (page = currentPage.value) => {
+      currentPage.value = page;
       try {
-        const res = await axios.get('http://localhost:3000/todos');
-        //console.log(res.data);
+        const res = await axios.get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`);
+
+        numberOfTodos.value = res.headers['x-total-count'];
+
         todos.value = res.data;
       } catch( err ) {
         console.log(err);
@@ -85,12 +107,6 @@ export default {
         } catch(err) {
           console.log(err)
         }
-      // .then(res => {
-      //   console.log(res);
-      //   todos.value.push(res.data)
-      // }).catch(err => {
-      //   console.log(err)
-      // });
     };
 
     const toggleTodo = async (index) => {
@@ -103,7 +119,6 @@ export default {
       } catch(err) {
         console.log(err)
      }
-      //console.log(index)
     };
 
     const count = ref(1);
@@ -128,11 +143,11 @@ export default {
       addTodo,
       toggleTodo,
       count,
-     // doubleCount,
       searchText,
       filteredTodos,
-      getTodos
-
+      getTodos,
+      numberOfPages,
+      currentPage,
     }
   }
 }
