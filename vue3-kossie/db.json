@@ -7,18 +7,13 @@
     },
     {
       "subject": "hello1",
-      "completed": false,
+      "completed": true,
       "id": 5
     },
     {
       "subject": "hello2",
-      "completed": true,
-      "id": 6
-    },
-    {
-      "subject": "1",
       "completed": false,
-      "id": 7
+      "id": 6
     },
     {
       "subject": "2",
@@ -69,6 +64,11 @@
       "subject": "dfadf",
       "completed": false,
       "id": 17
+    },
+    {
+      "subject": "가나",
+      "completed": false,
+      "id": 18
     }
   ]
 }
