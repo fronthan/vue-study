@@ -57,16 +57,11 @@
     },
     {
       "subject": "123",
-      "completed": false,
+      "completed": true,
       "id": 16
     },
     {
-      "subject": "dfadf",
-      "completed": false,
-      "id": 17
-    },
-    {
-      "subject": "가나",
+      "subject": "가나1",
       "completed": false,
       "id": 18
     }

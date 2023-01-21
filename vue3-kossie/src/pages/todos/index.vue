@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h2>To-Do List</h2>
     <input class="form-control" type="text"
       v-model="searchText"
@@ -67,20 +67,6 @@ export default {
     const numberOfPages = computed(()=> {
       return Math.ceil(numberOfTodos.value/limit);
     })
-    
-    const deleteTodo = async (idx) => {
-      error.value = '';
-      const id = todos.value[idx].id;
-      try {
-       await axios.delete('http://localhost:3000/todos/'+id);
-       // console.log(res);
-        // todos.value.splice(idx,1);
-        getTodos(1);
-      } catch (err) {
-        console.log(err);
-        error.value = 'Something went wrong.';
-      }
-    };
 
     const searchText = ref('');
 
@@ -115,16 +101,30 @@ export default {
         }
     };
 
-    const toggleTodo = async (index) => {
+    const toggleTodo = async (index, checked) => {
       const id = todos.value[index].id;
       try {
         await axios.patch('http://localhost:3000/todos/'+id, {
-          completed: !todos.value[index].completed
+          completed: checked
         }); 
-        todos.value[index].completed = !todos.value[index].completed;
+        todos.value[index].completed = checked;
       } catch(err) {
         console.log(err)
      }
+    };
+
+    const deleteTodo = async (idx) => {
+      error.value = '';
+      const id = todos.value[idx].id;
+      try {
+       await axios.delete('http://localhost:3000/todos/'+id);
+       // console.log(res);
+        // todos.value.splice(idx,1);
+        getTodos(1);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong.';
+      }
     };
 
     const count = ref(1);
