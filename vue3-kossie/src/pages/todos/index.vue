@@ -1,6 +1,14 @@
 <template>
+<div>
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button 
+        @click="moveToCreatePage"
+        class="btn btn-primary"
+      >할일만들기</button>
+    </div>
+
     <input class="form-control" type="text"
       v-model="searchText"
       placeholder="검색"
@@ -36,6 +44,12 @@
       @get-todos="getTodos" 
     />
   </div>
+  <Toast 
+    v-if="showToast"
+   :message="toastMessage"
+   :type="toastAlert"
+  />
+</div>
 </template>
 
 <script>
@@ -44,12 +58,16 @@ import axios from "axios";
 import TodoList from '@/components/TodoList.vue';
 import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoPagination from '@/components/TodoPagination.vue';
+import { useToast } from '@/composables/toast.js';
+import Toast from '@/components/Toast.vue';
+import { useRouter } from 'vue-router';
 
 export default {
   components : {
     TodoSimpleForm,
     TodoList,
-    TodoPagination
+    TodoPagination,
+    Toast
   }, 
   setup() {
 
@@ -61,9 +79,17 @@ export default {
     const limit = 5;
     const currentPage = ref(1);
 
+    const {
+      toastMessage,
+      showToast,
+      triggerToast,
+      toastAlert
+    } = useToast();
     // watch(currentPage, (currentPage, prev) => {
     //   console.log(currentPage, prev)
     // });
+    const router = useRouter();
+
     const numberOfPages = computed(()=> {
       return Math.ceil(numberOfTodos.value/limit);
     })
@@ -80,6 +106,7 @@ export default {
         todos.value = res.data;
       } catch( err ) {
         console.log(err);
+        triggerToast('에러가 발생했습니다.', 'danger')
       }
     };
 
@@ -123,14 +150,24 @@ export default {
         getTodos(1);
       } catch (err) {
         console.log(err);
-        error.value = 'Something went wrong.';
+        // error.value = 'Something went wrong.';
+        triggerToast('오류가 발생했습니다.', 'danger');
+
       }
     };
 
     const count = ref(1);
     // const doubleCount = computed(()=> {
     //   return count.value * 2;
-    // });    
+    // });   
+    
+    
+    const moveToCreatePage = () => {
+      router.push({
+        name : 'TodoCreate',
+
+      })
+    }
 
     let timeout = null;
     const searchTodo = () => {
@@ -166,6 +203,10 @@ export default {
       numberOfPages,
       currentPage,
       searchTodo,
+      toastMessage,
+      toastAlert,
+      showToast,
+      moveToCreatePage
     }
   }
 }
