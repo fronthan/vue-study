@@ -1,44 +1,60 @@
 <template>
-  <div>
-    <div
-    v-for="(todo, idx) in todos"
-    :key="todo.id"
-    class="card mt-2"
-    >
-      <div
-        class="card-body p-2 d-flex align-items-center"
+      <!-- <div
+      v-for="(todo, idx) in todos"
+      :key="todo.id"
+      class="card mt-2"
+      > -->
+  <List :items="todos">
+    <template #default="{item,idx}">
+      <div class="card-body p-2 d-flex align-items-center" style="cursor:pointer"
+        @click="moveToPage(item.id)"
       >
-        <div class="form-check flex-grow-1">
-          <input class="form-check-input" type="checkbox" :checked="todo.completed"
-           @change="toggleTodo(idx, $event)"
-           @click.stop
+        <div class="flex-grow-1">
+          <input class="me-2 ml-2" type="checkbox"
+            :checked="item.completed"
+            @change="toggleTodo(idx, $event)"
+            @click.stop
           >
-          <label
-            class="form-check-label"
-            :class="{todo : todo.completed}"
-            :style="todo.completed ? todoStyle : {}"           
-            @click="moveToPage(todo.id)"
+          <span class="txt"
+            :class="{todo : item.completed}"
+            :style="item.completed ? todoStyle : {}"
           >
-            {{ todo.subject }}
-          </label>
+            {{ item.subject }}
+          </span>
         </div>
         <div>
           <button 
             class="btn btn-danger btn-sm"
-            @click.stop="deleteTodo(idx)"
-          >delete
+            @click.stop="openModal(item.id)"
+          >
+            delete
           </button>
         </div>      
       </div>
-    </div>
-  </div>
+    </template>
+  </List>
+
+  <teleport to="#modal">
+    <Modal
+      v-if="showModal" 
+      @close="closeModal"  
+      @delete="deleteTodo"
+    /> 
+  </teleport>
 </template>
 
 <script>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Modal from '@/components/DeleteModal.vue';
+import List from '@/components/List.vue';
 
 export default {
   //props: ['todos']
+  components: {
+    Modal,
+    List
+  },
   props: {
     todos: {
       type:Array,
@@ -47,20 +63,29 @@ export default {
   },
   emits: ['delete-todo', 'toggle-todo'],
 
-  setup(props, { emit }){
-    const todoStyle = {
-      textDecoration: 'line-through',
-      color: 'gray'
-    };    
-
+  setup(props, { emit }){   
     const router = useRouter();
+    const showModal = ref(false);
+    const todoDeleteId = ref(null);
     
     const toggleTodo = (index, event) => {
       emit('toggle-todo', index, event.target.checked);
     };
 
-    const deleteTodo = (index) => {
-      emit('delete-todo', index);
+    const openModal = (id) => {
+      todoDeleteId.value = id;
+      showModal.value = true;
+    }    
+    const closeModal = () => {
+      todoDeleteId.value = null;
+      showModal.value = false;
+    }   
+
+    const deleteTodo = () => {
+      emit('delete-todo', todoDeleteId.value);
+
+      showModal.value = false;
+      todoDeleteId.value = null
     }
 
     const moveToPage = (id) => {
@@ -74,17 +99,24 @@ export default {
       })
     }
 
+    const todoStyle = {
+      textDecoration: 'line-through',
+      color: 'gray'
+    };   
+
     return {
       toggleTodo,
       deleteTodo,
-      todoStyle,
       moveToPage,
+      showModal,
+      openModal,
+      closeModal,
+      todoStyle,
     }    
   }
-
 }
 </script>
 
-<style>
-
+<style scoped>
+  .txt {display: inline-block; cursor: pointer;}
 </style>
