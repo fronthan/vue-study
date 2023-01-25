@@ -8,10 +8,8 @@
     </div>
 
     <input
-      class="form-control"
-      type="text"
+      class="form-control" type="text" placeholder="검색"
       v-model="searchText"
-      placeholder="검색"
       @keyup.enter="searchTodo"
     />
 
@@ -80,6 +78,13 @@ export default {
     //   console.log(currentPage, prev)
     // });    
 
+    watch(searchText, () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        getTodos(1);
+      }, 2000);
+    });
+    
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
     });
@@ -147,11 +152,6 @@ export default {
       }
     };    
 
-    // const count = ref(1);
-    // const doubleCount = computed(()=> {
-    //   return count.value * 2;
-    // });
-
     const moveToCreatePage = () => {
       router.push({
         name: "TodoCreate",
@@ -164,12 +164,13 @@ export default {
       getTodos(1);
     };
 
-    watch(searchText, () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        getTodos(1);
-      }, 2000);
-    });
+    
+
+    // const count = ref(1);
+    // const doubleCount = computed(()=> {
+    //   return count.value * 2;
+    // });
+
     // const filteredTodos = computed(()=> {
     //   if(searchText.value) {
     //     return todos.value.filter(t => {
@@ -185,9 +186,7 @@ export default {
       deleteTodo,
       addTodo,
       toggleTodo,
-    //  count,
       searchText,
-      //  filteredTodos,
       getTodos,
       numberOfPages,
       currentPage,
@@ -196,6 +195,8 @@ export default {
       toastAlert,
       showToast,
       moveToCreatePage,
+      //  count,
+      //  filteredTodos,
     };
   },
 };

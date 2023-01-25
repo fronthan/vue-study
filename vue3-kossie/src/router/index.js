@@ -30,8 +30,4 @@ const router = createRouter({
   ]
 });
 
-//1 home
-//2 /todos
-//3 /todos/create
-//4 /todos/:id
 export default router;

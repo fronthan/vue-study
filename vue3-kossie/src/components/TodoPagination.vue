@@ -27,8 +27,7 @@ export default {
     }
 
     return {
-      getTodos,
-      
+      getTodos
     }
   }
 }
