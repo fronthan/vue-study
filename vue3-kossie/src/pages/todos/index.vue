@@ -36,30 +36,27 @@
     <hr />
 
     <TodoPagination
+      v-if="todos.length"
       :currentPage="currentPage"
       :numberOfPages="numberOfPages"
       @get-todos="getTodos"
-    />
-    <Toast v-if="showToast" :message="toastMessage" :type="toastAlert" />
+    />    
   </div>
 </template>
 
 <script>
 import { ref, computed, watch } from "vue"; //data를 reactive하게
 import { useRouter } from "vue-router";
-import axios from "axios";
+import axios from "@/axios";
 import TodoList from "@/components/TodoList.vue";
 // import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoPagination from "@/components/TodoPagination.vue";
 import { useToast } from "@/composables/toast.js";
-import Toast from "@/components/Toast.vue";
 
 export default {
   components: {
-    // TodoSimpleForm,
     TodoList,
     TodoPagination,
-    Toast,
   },
   setup() {
     const router = useRouter();
@@ -93,7 +90,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
+          `todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
         );
 
         numberOfTodos.value = res.headers["x-total-count"];
@@ -109,7 +106,7 @@ export default {
     const addTodo = async (todo) => {
       //데이터베이스 투두를 저장
       try {
-        await axios.post("http://localhost:3000/todos", {
+        await axios.post("todos", {
           subject: todo.subject,
           completed: todo.completed,
         });
@@ -128,7 +125,7 @@ export default {
       // const id = todos.value[idx].id; todoList에서 id 가져오기 전에 씀
 
       try {
-        await axios.delete("http://localhost:3000/todos/" + id);
+        await axios.delete("todos/" + id);
         // console.log(res);
         // todos.value.splice(idx,1);
         getTodos(1);
@@ -142,7 +139,7 @@ export default {
     const toggleTodo = async (index, checked) => {
       const id = todos.value[index].id;
       try {
-        await axios.patch("http://localhost:3000/todos/" + id, {
+        await axios.patch("todos/" + id, {
           completed: checked,
         });
         todos.value[index].completed = checked;

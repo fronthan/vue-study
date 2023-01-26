@@ -17,11 +17,21 @@
 
 <script>
 export default {
-  props: ['numberOfPages', 'currentPage'],
+  props: {
+    numberOfPages: {
+      type: Number,
+      required:true
+    },
+    currentPage: {
+      type: Number,
+      required: true
+    }
+  },
 
   emits: ['get-todos'],
 
   setup(props, context) {
+
     const getTodos = (page) => {
       context.emit('get-todos', page);
     }

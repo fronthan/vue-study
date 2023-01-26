@@ -46,6 +46,7 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import Modal from '@/components/DeleteModal.vue';
 import List from '@/components/List.vue';
 
@@ -64,13 +65,23 @@ export default {
   emits: ['delete-todo', 'toggle-todo'],
 
   setup(props, { emit }){   
+  
     const router = useRouter();
+
     const showModal = ref(false);
     const todoDeleteId = ref(null);
     
-    const toggleTodo = (index, event) => {
+    //emit 부모로 이벤트를 보낸다.
+    const toggleTodo = (index, event) => {      
       emit('toggle-todo', index, event.target.checked);
     };
+    const deleteTodo = () => {
+      emit('delete-todo', todoDeleteId.value);
+
+      showModal.value = false;
+      todoDeleteId.value = null
+    }
+
 
     const openModal = (id) => {
       todoDeleteId.value = id;
@@ -79,13 +90,6 @@ export default {
     const closeModal = () => {
       todoDeleteId.value = null;
       showModal.value = false;
-    }   
-
-    const deleteTodo = () => {
-      emit('delete-todo', todoDeleteId.value);
-
-      showModal.value = false;
-      todoDeleteId.value = null
     }
 
     const moveToPage = (id) => {
