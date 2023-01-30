@@ -77,7 +77,7 @@
           const current = result[i];          
           
           if (current.updnLine == upDown && current.subwayId == "1001") { 
-            const ary = place == 'home' ? ['천안', '서동탄', '신창'] : ['광운대', '청량리'];
+            const ary = place == 'home' ? ['천안', '서동탄', '신창'] : ['광운대', '청량리', '광운대역'];
 
            console.log(current)
             if(current.bstatnNm.startsWith(ary[0]) || current.bstatnNm.startsWith(ary[1]) || current.bstatnNm.startsWith(ary[2])) {              
