@@ -34,3 +34,6 @@
 - 2023.01.30 ~ 2023.01.31
 - africa-memo
 - africa-login
+
+## 실전 Vue.js 3 (개정판) 책 - book-practice
+- 2023.01.31 ~ 
