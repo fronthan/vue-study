@@ -6,13 +6,15 @@ const db = require('./database');
 
 app.use(bodyParser.json());
 
+app.use(express.static('dist')) //folder name
+
 app.get('/api/memos', async (req, res) => {
   const result = await db.run("SELECT * FROM memos");
   res.send(result)
 })
 
 app.post('/api/memos', async (req, res) => {
-  await db.run('INSERT INTO memos "content" = ?', [req.body.content]);
+  await db.run('INSERT INTO memos (content) VALUES (?)', [req.body.content]);
   const result = await db.run("SELECT * FROM memos")
 
   // memos.push(req.body.content);
