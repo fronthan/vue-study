@@ -1,15 +1,15 @@
 <template>
   <div class="todo_list">
     <ul>
-      <li v-for="(val, idx) in todos" :key="idx">
-        <span v-if="!todo.isEditing" @dblclick="handleDblClick(idx)">{{ val.content }}</span> 
+      <li v-for="(todo, idx) in todos" :key="idx">
+        <span v-if="!isEditing(index)" @dblclick="handleDblClick(index)">{{ todo.content }}</span> 
         
         <input v-else type="text" ref="editInput" 
-          :value="val.content"
-          v-on:blur="handleBlur(idx)"
-          @keydown.enter="updateTodo(idx, $event)"
+          :value="todo.content"
+          v-on:blur="handleBlur()"
+          @keydown.enter="updateTodo(todo.id, $event)"
         />
-        <button @click="removeTodo(idx)">삭제</button>
+        <button @click="removeTodo(index)">삭제</button>
       </li>     
     </ul>
   </div>
@@ -19,7 +19,7 @@
 import { ref } from 'vue';
 
 export default {
-  props: ['todos'],
+  props: ['todos', 'editingId'],
   emits: ['remove-todo', 'update-todo'],
 
   setup(props, {emit}) {
@@ -32,26 +32,42 @@ export default {
 
     const editInput = ref(null);
     const handleDblClick = (idx) => {
-      todos[idx].isEditing = true;
+     // todos[idx].isEditing = true;
+
+      const { id } = todos[idx];
+
+      emit('set-editing-id', id)
 
       nextTick(() => {
         editInput.value.focus()
       })
     }
 
-    const updateTodo = (index, e) => {
+    const handleBlur = () => {
+      emit('reset-editing-id')
+    }
+
+    const updateTodo = (id, e) => {
       const content = e.target.value.trim();
 
       if(content.length <= 0) {
         return false;
       }
 
-      emit('update-todo', content, index)
+      emit('update-todo', content, id)
 
       editInput.value.blur()
     }
 
-    return { todos, removeTodo, editInput, handleDblClick, updateTodo }
+    const isEditing = (index) => {
+      if(todos[index]) {
+        return todos[index].id === props.editingId
+      }
+
+      return false
+    }
+
+    return { todos, removeTodo, editInput, handleDblClick, updateTodo, isEditing }
   }
 }
 </script>
