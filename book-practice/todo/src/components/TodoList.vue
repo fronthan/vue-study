@@ -1,73 +1,64 @@
 <template>
   <div class="todo_list">
     <ul>
-      <li v-for="(todo, idx) in todos" :key="idx">
-        <span v-if="!isEditing(index)" @dblclick="handleDblClick(index)">{{ todo.content }}</span> 
-        
-        <input v-else type="text" ref="editInput" 
-          :value="todo.content"
-          v-on:blur="handleBlur()"
-          @keydown.enter="updateTodo(todo.id, $event)"
-        />
-        <button @click="removeTodo(index)">삭제</button>
-      </li>     
+      <TodoItem
+        v-for="todo in todos"
+        v-bind:key="todo.id"
+        v-bind:todo="todo"
+        v-bind:editingId="editingId"
+        v-on:remove-todo="fireRemoveTodo"
+        v-on:update-todo="fireUpdateTodo"
+        v-on:set-editing-id="fireSetEditingId"
+        v-on:reset-editing-id="fireResetEditingId"
+      />
     </ul>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+// import { ref } from 'vue';
+import TodoItem from './TodoItem.vue';
 
 export default {
+  components: { TodoItem },
   props: ['todos', 'editingId'],
-  emits: ['remove-todo', 'update-todo'],
+  emits: ['remove-todo', 'update-todo', 'set-editing-id', 'reset-editing-id'],
 
   setup(props, {emit}) {
-    const todos = props.todos;
+    // const todos = props.todos;
 
-    const removeTodo = (idx) => {
-      emit('remove-todo', idx);
-      todos.value.splice(idx, 1);
-    }
+    // const removeTodo = (idx) => {
+    //   emit('remove-todo', idx);
+    //   todos.value.splice(idx, 1);
+    // }
 
-    const editInput = ref(null);
-    const handleDblClick = (idx) => {
-     // todos[idx].isEditing = true;
-
-      const { id } = todos[idx];
-
+    // const editInput = ref(null);
+    
+    const fireSetEditingId = (id) => {
       emit('set-editing-id', id)
-
-      nextTick(() => {
-        editInput.value.focus()
-      })
     }
 
-    const handleBlur = () => {
+    const fireResetEditingId = () => {
       emit('reset-editing-id')
     }
 
-    const updateTodo = (id, e) => {
-      const content = e.target.value.trim();
+    const fireRemoveTodo = (id) => {
+      emit('remove-todo', id)
+    }
 
-      if(content.length <= 0) {
-        return false;
-      }
-
+    const fireUpdateTodo = (content, id) => {
       emit('update-todo', content, id)
-
-      editInput.value.blur()
     }
 
-    const isEditing = (index) => {
-      if(todos[index]) {
-        return todos[index].id === props.editingId
-      }
+    // const isEditing = (index) => {
+    //   if(todos[index]) {
+    //     return todos[index].id === props.editingId
+    //   }
 
-      return false
-    }
+    //   return false
+    // }
 
-    return { todos, removeTodo, editInput, handleDblClick, updateTodo, isEditing }
+    return { fireSetEditingId, fireResetEditingId, fireRemoveTodo, fireUpdateTodo }
   }
 }
 </script>

@@ -2,6 +2,7 @@
   <TodoHeader />
 
   <TodoInput v-on:add-todo="addTodo" />
+
   <TodoList v-bind:todos="todos"
     v-bind:editingId="editingId"
     v-on:remove-todo="removeTodo"
@@ -14,7 +15,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import TodoHeader from './components/TodoHeader.vue';
 import TodoInput from './components/TodoInput.vue';
@@ -27,8 +28,7 @@ export default {
   setup() {
     const store = useStore();
     
-    const todos = computed(() => store.state.todos)
-    store.dispatch('restore');
+    const todos = computed(() => store.state.todos)   
 
     const editingId = computed(()=> store.state.editingId)
     //모든 todo 삭제
@@ -40,24 +40,27 @@ export default {
     //todo 추가
     const addTodo = (content) => {
       const id = new Date().getTime();
-      const todo = { id, content }
+      
+      const done = false
+      const todo = { id, content, done }
 
       store.dispatch('addTodo', todo)
       store.dispatch('save')
     }
 
     //특정 todo 삭제
-    const removeTodo = (index) => {
-      store.dispatch('removeTodo', index)
+    const removeTodo = (id) => {
+      store.dispatch('removeTodo', id)
       store.dispatch('save')
     }
 
+    //특정 todo 편집
     const editTodo = (content, id) => {
       store.dispatch('editTodo', { content, id })
       store.dispatch('save')
     }
 
-    const setEidingId = (id) => {
+    const setEditingId = (id) => {
       store.dispatch('setEditingId', id);
     }
 
@@ -65,7 +68,9 @@ export default {
       store.dispatch('resetEditingId')
     }
 
-    return { todos, editingId, clearAll, addTodo, removeTodo, editTodo, setEidingId, resetEditingId}
+    store.dispatch('restore');
+
+    return { todos, editingId, clearAll, addTodo, removeTodo, editTodo, setEditingId, resetEditingId}
   }
 
 

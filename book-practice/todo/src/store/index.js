@@ -7,23 +7,24 @@ export const store = createStore({
   }),
 
   mutations: {//스토어의 상태를 변경할 수 있는 유일한 메서드이다.
-    RESTORE(state, { todos }) {
-      state.todos = todos
-    },
 
-    ADD_TODO (state, todo) {
+    ADD_TODO(state, todo) {
       state.todos.push(todo)
     },
 
-    REMOVE_TODO (state, index) {
-      state.todos.splice(index, 1);
+    REMOVE_TODO(state, id) {
+      const targetIndex = state.todos.findIndex(v => v.id === id)
+      state.todos.splice(targetIndex, 1);
     },
 
     CLEAR_ALL(state) {
       state.todos.length = 0
     },
 
-    
+    RESTORE(state, { todos }) {
+      state.todos = todos
+    },
+
     EDIT_TODO(state, payload) {
       const { content, id } = payload
       const targetIndex = state.todos.findIndex(v => v.id === id)
@@ -31,11 +32,21 @@ export const store = createStore({
       state.todos.splice(targetIndex, 1, { ...targetTodo, content })
     },
 
-    SET_EDITING_ID (state, id) {
+    TOGGLE_TODO_STATUS (state, id) {
+      const filtered = state.todos.filter(todo => {
+        return todo.id === id
+      });
+
+      filtered.forEach(todo => {
+        todo.done = !todo.done
+      })
+    },
+
+    SET_EDITING_ID(state, id) {
       state.editingId = id;
     },
 
-    RESET_EDITING_ID (state) {
+    RESET_EDITING_ID(state) {
       state.editingId = 0;
     }
   },
@@ -44,11 +55,11 @@ export const store = createStore({
     addTodo(context, todo) {
       context.commit("ADD_TODO", todo)
     },
-    
-    removeTodo(context, index) {
-      context.commit("REMOVE_TODO", index)
+
+    removeTodo(context, id) {
+      context.commit("REMOVE_TODO", id)
     },
-    
+
     clearAll(context) {
       context.commit("CLEAR_ALL")
     },
@@ -64,7 +75,7 @@ export const store = createStore({
     restore({ commit }) {
       const data = localStorage.getItem('todo-app-data')
 
-      if(data) {
+      if (data) {
         commit('RESTORE', JSON.parse(data))
       }
     },
@@ -73,16 +84,16 @@ export const store = createStore({
       context.commit("EDIT_TODO", payload)
     },
 
-    setEditingId (context, id) {
+    toggleTodoStatus(context, id) {
+      context.commit('TOGGLE_TODO_STATUS', id)
+    },
+    
+    setEditingId(context, id) {
       context.commit('SET_EDITING_ID', id)
     },
 
-    resetEditingId (context) {
+    resetEditingId(context) {
       context.commit('RESET_EDITING_ID')
     },
-
   }
-    
-    
-  
 })
