@@ -1,83 +1,126 @@
 <template>
-  <TodoHeader />
+  <div>
+    <TodoHeader />
 
-  <TodoInput v-on:add-todo="addTodo" />
+    <TodoInput v-on:add-todo="handleAddTodo" />
 
-  <TodoList v-bind:todos="todos"
-    v-bind:editingId="editingId"
-    v-on:remove-todo="removeTodo"
-    v-on:update-todo="editTodo"
-    v-on:set-editing-id="setEditingId"
-    v-on:reset-editing-id="resetEditingId"
-  />
+    <TodoFilter v-bind:filter="filter" v-on:set-filter="handleSetFilter" />
 
-  <TodoFooter v-on:remove-all="clearAll"/>
+    <TodoList
+      v-on:remove-todo="handleRemoveTodo"
+      v-on:update-todo="handleEditTodo"
+      v-on:set-editing-id="handleSetEditingId"
+      v-on:reset-editing-id="handleResetEditingId"
+      v-on:toggle-todo-status="handleToggleTodoStatus"
+    />
+
+    <TodoFooter v-on:remove-all="handleClearAll" />
+  </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-import TodoHeader from './components/TodoHeader.vue';
-import TodoInput from './components/TodoInput.vue';
-import TodoList from './components/TodoList.vue';
-import TodoFooter from './components/TodoFooter.vue';
+import { readonly, provide } from 'vue';
+
+import TodoHeader from "./components/TodoHeader.vue";
+import TodoInput from "./components/TodoInput.vue";
+import TodoList from "./components/TodoList.vue";
+import TodoFooter from "./components/TodoFooter.vue";
+
+import { useTodos } from "./compositions/useTodos.js";
+import TodoFilter from "./components/TodoFilter.vue";
 
 export default {
-  components: { TodoHeader, TodoInput, TodoList, TodoFooter },
+  components: { TodoHeader, TodoInput, TodoList, TodoFooter, TodoFilter },
 
   setup() {
-    const store = useStore();
-    
-    const todos = computed(() => store.state.todos)   
+     const {
+      todos,
+      editingId,
+      filter,
+      filteredTodos,
+      addTodo,
+      removeTodo,
+      clearAll,
+      editTodo,
+      setEditingId,
+      resetEditingId,
+      save,
+      restore,
+      toggleTodoStatus,
+      setFilter
+    } = useTodos();
 
-    const editingId = computed(()=> store.state.editingId)
+    //자식 컴포넌트에 데이터와 함수 전달
+    provide('filteredTodos', readonly(filteredTodos))
+    provide('editingId', editingId)
+    provide('filter', filter)
+
     //모든 todo 삭제
-    const clearAll = () => {
-      store.dispatch('clearAll');
-      store.dispatch('save');
-    }
+    const handleClearAll = () => {
+      clearAll();
+      save();
+    };
 
     //todo 추가
-    const addTodo = (content) => {
-      const id = new Date().getTime();
-      
-      const done = false
-      const todo = { id, content, done }
+    const handleAddTodo = content => {
+      const todo = { content };
 
-      store.dispatch('addTodo', todo)
-      store.dispatch('save')
-    }
+      addTodo(todo);
+      save();
+    };
 
     //특정 todo 삭제
-    const removeTodo = (id) => {
-      store.dispatch('removeTodo', id)
-      store.dispatch('save')
-    }
+    const handleRemoveTodo = id => {
+      removeTodo(id);
+      save();
+    };
 
     //특정 todo 편집
-    const editTodo = (content, id) => {
-      store.dispatch('editTodo', { content, id })
-      store.dispatch('save')
-    }
+    const handleEditTodo = (content, id) => {
+      editTodo({ id, content });
+      save();
+    };
 
-    const setEditingId = (id) => {
-      store.dispatch('setEditingId', id);
-    }
+    const handleSetEditingId = id => {
+      setEditingId(id);
+    };
 
-    const resetEditingId = () => {
-      store.dispatch('resetEditingId')
-    }
+    const handleResetEditingId = () => {
+      resetEditingId();
+    };
 
-    store.dispatch('restore');
+    const handleToggleTodoStatus = id => {
+      toggleTodoStatus();
+      save();
+    };
 
-    return { todos, editingId, clearAll, addTodo, removeTodo, editTodo, setEditingId, resetEditingId}
+    const handleSetFilter = filter => {
+      setFilter(filter);
+    };
+
+    restore();
+
+    return {
+      todos,
+      filteredTodos,
+      editingId,
+      filter,
+      handleClearAll,
+      handleAddTodo,
+      handleRemoveTodo,
+      handleEditTodo,
+      handleSetEditingId,
+      handleResetEditingId,
+      handleToggleTodoStatus,
+      handleSetFilter
+    };
   }
-
-
-
-}
+};
 </script>
 
 <style scoped>
-  body {background-color: #fefefe; text-align: center;}
+body {
+  background-color: #fefefe;
+  text-align: center;
+}
 </style>

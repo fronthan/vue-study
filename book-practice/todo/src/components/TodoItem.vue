@@ -2,12 +2,18 @@
   <div>
     <li>
       <span v-if="!isEditing"
-        v-on:dblclick="handleDblClick">{{ todo.content }}</span>
+        v-on:dblclick="handleDblClick"
+      >
+        {{ todo.content }}
+      </span>
       <input v-else type="text"
         ref="editInput"
         v-bind:value="todo.content"
         v-on:blur="handleBlur"
-        v-on:keydown.enter="updateTodo" />
+        v-on:keydown.enter="updateTodo"
+      />
+      <input type="checkbox" v-bind:checked="todo.done" v-on:change="fireToggleTodoStatus" >
+      
       <button v-on:click="removeTodo">삭제</button>
     </li>
   </div>
@@ -20,7 +26,7 @@ import { ref, computed, nextTick } from 'vue'
 export default {
   props: ['todo', 'editingId'],
 
-  emits: ['update-todo', 'remove-todo', 'set-editing-id', 'reset-editing-id'],
+  emits: ['update-todo', 'remove-todo', 'set-editing-id', 'reset-editing-id', 'toggle-todo-status'],
 
   setup(props, context) {
     const todo = props.todo
@@ -62,8 +68,13 @@ export default {
 
     }
 
+    const fireToggleTodoStatus = () => {
+      const id = todo.id
+      context.emit('toggle-todo-status', id)
+    }
+
     return {
-      isEditing, removeTodo, handleDblClick, handleBlur, updateTodo, editInput
+      isEditing, removeTodo, handleDblClick, handleBlur, updateTodo, editInput, fireToggleTodoStatus
     }
   }
 }

@@ -10,30 +10,25 @@
         v-on:update-todo="fireUpdateTodo"
         v-on:set-editing-id="fireSetEditingId"
         v-on:reset-editing-id="fireResetEditingId"
+        v-on:toggle-todo-status="fireToggleTodoStatus"
       />
     </ul>
   </div>
 </template>
 
 <script>
-// import { ref } from 'vue';
+import { inject } from 'vue';
 import TodoItem from './TodoItem.vue';
 
 export default {
   components: { TodoItem },
-  props: ['todos', 'editingId'],
-  emits: ['remove-todo', 'update-todo', 'set-editing-id', 'reset-editing-id'],
+  emits: ['remove-todo', 'update-todo', 'set-editing-id', 'reset-editing-id','toggle-todo-status'],
 
   setup(props, {emit}) {
-    // const todos = props.todos;
+    //공급된 provide 데이터 가져오기
+    const todos = inject('filteredTodos')
+    const editingId= inject('editingId')   
 
-    // const removeTodo = (idx) => {
-    //   emit('remove-todo', idx);
-    //   todos.value.splice(idx, 1);
-    // }
-
-    // const editInput = ref(null);
-    
     const fireSetEditingId = (id) => {
       emit('set-editing-id', id)
     }
@@ -50,6 +45,10 @@ export default {
       emit('update-todo', content, id)
     }
 
+    const fireToggleTodoStatus = (id) => {
+      emit('toggle-todo-status', id);
+    }
+
     // const isEditing = (index) => {
     //   if(todos[index]) {
     //     return todos[index].id === props.editingId
@@ -58,7 +57,7 @@ export default {
     //   return false
     // }
 
-    return { fireSetEditingId, fireResetEditingId, fireRemoveTodo, fireUpdateTodo }
+    return { todos, editingId, fireSetEditingId, fireResetEditingId, fireRemoveTodo, fireUpdateTodo, fireToggleTodoStatus }
   }
 }
 </script>
