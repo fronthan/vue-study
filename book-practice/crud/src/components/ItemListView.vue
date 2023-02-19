@@ -1,0 +1,15 @@
+<template>
+  <div>
+    <h2>상품 목록</h2>
+    <router-link to="{ name: 'ItemRegisterView}}">새로만들기</router-link>
+    <item-list></item-list>
+  </div>
+</template>
+
+<script>
+import ItemList from '@/components/ItemList.vue'
+
+export default {
+ components: { ItemList } 
+}
+</script>
