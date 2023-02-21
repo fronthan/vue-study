@@ -1,8 +1,8 @@
 
 <template>
-  <div>
+  <div align="center">
     <h2>상품 수정</h2>
-   <ItemModifyForm/>
+   <item-modify-form/>
 
   </div>
 </template>

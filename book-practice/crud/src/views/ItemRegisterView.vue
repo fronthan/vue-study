@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div align="center">
     <h2>상품 등록 </h2>
     
-    <ItemRegisterForm />
+    <item-register-form />
   </div>
 </template>
 

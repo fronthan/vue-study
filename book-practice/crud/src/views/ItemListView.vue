@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div align="center">
     <h2>상품 목록</h2>
-    <router-link to="{ name: 'ItemRegisterView}}">새로만들기</router-link>
-    <item-list></item-list>
+    <router-link :to="{ name: 'ItemRegisterView' }">새로만들기</router-link>
+    <item-list/>
   </div>
 </template>
 
