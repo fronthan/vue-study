@@ -22,6 +22,11 @@
 
 <script>
 export default {
+  props : {
+    boards: {
+      type:Array
+    }
+  },
   
 }
 </script>

@@ -18,7 +18,7 @@ export default {
     const addPost = (payload) => {
       const { title, writer, content } = payload;
 
-      client.post('/board', { title, content, writer })
+      client.post('/boards', { title, content, writer })
       .then(res => {
         console.log(res)
         alert('등록되었습니다');

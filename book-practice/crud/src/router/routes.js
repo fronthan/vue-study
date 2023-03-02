@@ -19,7 +19,7 @@ const routes = [
   },
   //등록 화면
   {
-    path: '/board/create',
+    path: '/boards/create',
     name: 'BoardRegisterView',
     components: {
       default: BoardRegisterView
@@ -27,7 +27,7 @@ const routes = [
   },
   //상세 화면
   {
-    path: '/board/:boardNo',
+    path: '/boards/:boardNo',
     name: 'BoardReadView',
     components: {
       default: BoardReadView
@@ -38,7 +38,7 @@ const routes = [
   },
   //수정 화면
   {
-    path: '/board/:boardNo/edit',
+    path: '/boards/:boardNo/edit',
     name: 'BoardModifyView',
     components: {
       default: BoardModifyView
@@ -47,35 +47,6 @@ const routes = [
       default: true
     }
   },
-
-
-  {
-    path: '/item/register',
-    name: 'ItemRegisterView',
-    components: {
-      default: ItemRegisterView
-    }
-  },
-  {
-    path: '/item/:itemId',
-    name: 'ItemReadView',
-    components: {
-      default: ItemReadView
-    },
-    props: {
-      default: true
-    }
-  },
-  {
-    path: '/item/:itemId/modify',
-    name: 'ItemModifyView',
-    components: {
-      default: ItemModifyView
-    },
-    props: {
-      default: true
-    }
-  }
 ]
 
 export default routes

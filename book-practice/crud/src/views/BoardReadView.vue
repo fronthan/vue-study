@@ -9,7 +9,7 @@
       :to="{ name: 'BoardModifyView', params: { boardNo } }"
     >수정
     </router-link>
-    <button>삭제</button>
+    <button @click="deletePost">삭제</button>
 
     <router-link
       :to="{ name: 'BoardListView' }"
@@ -22,6 +22,7 @@
 import BoardRead from '@/components/BoardRead.vue'
 import client from '@/modules/client.js';
 import { ref } from 'vue'
+import { router } from '@/router/router.js'
 
 export default {
   components: {BoardRead },
@@ -43,9 +44,19 @@ export default {
       alert(err.response.data.message)
     })
 
+    const deletePost = () => {
+      const { boardNo } = board.value
+      client.delete(`/boards/${boardNo}`).then(res => {
+        alert('삭제되었습니다.');
+        router.push({name: 'BoardListView'})
+      }).catch(err=> {
+        alert(err.response.data.message)
+      })
+    }
+
     return {
       board,
-
+      deletePost,
     }
   }, 
 }

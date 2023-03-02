@@ -2,14 +2,66 @@
   <div>
     <h2>게시판 수정</h2>
 
-    <BoardModifyForm />
+    <BoardModifyForm v-if="board"
+      :board="board"
+      :boardNo="boardNo"
+      @modify-post="modifyPost"
+    />
+
+    <p v-else>loading.. </p>
   </div>
 </template>
 
 <script>
 import BoardModifyForm from '@/components/BoardModifyForm.vue';
+import client from '@/modules/client.js'
+import { router } from '@/router/router.js'
+import { ref } from 'vue'
 
 export default {
-  components: {BoardModifyForm}
+  components: {BoardModifyForm},
+  props: {
+    board: {
+      type:Object,
+      required:true
+    },
+    boardNo: {
+      type:String,
+      required:true
+    },
+    
+  },
+
+  setup() {
+    const board = ref({})
+
+    client.get(`/boards/${props.boardNo}`).then(res => {
+      board.value= res.data
+    }).catch(err => {
+      alert(err.response.data.message);
+      router.back()
+    })
+
+    const modifyPost = (payload) => {
+      const { title, content } = payload
+      client.put(`/boards/${props.boardNo}, {title, content}`).then(res=> {
+        alert('수정되었습니다')
+        router.push({
+          name: 'BoardReadView',
+          params: {
+            boardNo: res.data.boardNo.toString()
+          }
+        })
+      }).catch(err=> {
+        alert(err.response.data.message)
+      })
+    }
+
+    return {
+      board,
+      modifyPost,
+    }
+  }
+
 }
 </script>
