@@ -37,3 +37,4 @@
 
 ## 실전 Vue.js 3 (개정판) 책 - book-practice
 - 2023.01.31 ~ 
+- crud, file, ..
